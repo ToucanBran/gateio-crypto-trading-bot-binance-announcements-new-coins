@@ -1,0 +1,35 @@
+extraSecrets:
+  load-definition:
+    load_definition.json: |
+      {
+        "vhosts": [
+          {
+            "name": "/gateio"
+          }
+        ],
+        "users": [
+          {
+          "name": "main",
+          "password_hash": "pass1",
+          "hashing_algorithm": "rabbit_password_hashing_sha256",
+          "tags": ""
+          }
+        ],
+        "permissions": [
+          {
+          "user": "main",
+          "vhost": "/gatio",
+          "configure": ".*",
+          "write": ".*",
+          "read": ".*"
+          }
+        ]
+      }
+replicas: 1
+loadDefinition:
+  enabled: true
+  secretName: load-definition
+extraConfiguration: |
+  management.load_definitions = /app/load_definition.json
+auth:
+  erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P

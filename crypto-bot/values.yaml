@@ -1,0 +1,59 @@
+auth:
+  erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P
+
+
+rabbitmq:
+  replicas: 1
+  extraSecrets:
+    load-definition:
+      load_definition.json: |
+        {
+          "vhosts": [
+            {
+              "name": "/gateio"
+            }
+          ],
+          "users": [
+            {
+            "name": "main",
+            "password": "pass1",
+            "tags": "administrator"
+            }
+          ],
+          "permissions": [
+            {
+            "user": "main",
+            "vhost": "/gateio",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+            }
+          ]
+        }
+  loadDefinition:
+    enabled: true
+    existingSecret: load-definition
+  extraConfiguration: |
+    load_definitions = /app/load_definition.json
+  auth:
+    erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P
+    username: FAKE_USER
+    password: FAKE_PASS
+    
+mysql:
+  tag: 8.0.27 
+  primary:
+    persistence:
+      hostPath: /mnt/b/repos/mysql
+#   initdbScripts:
+#     db-init.sql: |
+#       CREATE TABLE friends (id INT, name VARCHAR(256), age INT, gender VARCHAR(3));
+  auth:
+    database: crypto
+    username: test
+    password: test
+    rootPassword: test
+  mysqlRootPassword: testing
+  mysqlUser: user
+  mysqlPassword: user
+
