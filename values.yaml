@@ -1,35 +1,29 @@
-extraSecrets:
-  load-definition:
-    load_definition.json: |
-      {
-        "vhosts": [
-          {
-            "name": "/gateio"
-          }
-        ],
-        "users": [
-          {
-          "name": "main",
-          "password_hash": "pass1",
-          "hashing_algorithm": "rabbit_password_hashing_sha256",
-          "tags": ""
-          }
-        ],
-        "permissions": [
-          {
-          "user": "main",
-          "vhost": "/gatio",
-          "configure": ".*",
-          "write": ".*",
-          "read": ".*"
-          }
-        ]
-      }
-replicas: 1
-loadDefinition:
+primary:
+  persistence:
+    enabled: true
+    existingClaim: task-pv-claim
+    storageClass: manual
+initdbScripts:
+  createDdb.sql: |
+    CREATE DATABASE gateio DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+  order.sql: |
+    CREATE TABLE gateio.orders (
+        symbol VARCHAR(50) PRIMARY KEY, 
+        price DECIMAL(35, 17),
+        volume INT,
+        the_time DECIMAL(35, 17),
+        take_profit INT,
+        stop_loss INT, 
+        create_time DECIMAL(35, 17),
+        update_time DECIMAL(35, 17),
+        currency_pair VARCHAR(100),
+        order_status VARCHAR(20),
+        order_type VARCHAR(20),
+        account VARCHAR(20),
+        side VARCHAR(10),
+        iceberg INT
+    )
+volumePermissions:
   enabled: true
-  secretName: load-definition
-extraConfiguration: |
-  management.load_definitions = /app/load_definition.json
 auth:
-  erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P
+  rootPassword: Jb9YVseD8X

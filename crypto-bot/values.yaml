@@ -10,7 +10,7 @@ rabbitmq:
         {
           "vhosts": [
             {
-              "name": "/gateio"
+              "name": "gateio"
             }
           ],
           "users": [
@@ -23,7 +23,7 @@ rabbitmq:
           "permissions": [
             {
             "user": "main",
-            "vhost": "/gateio",
+            "vhost": "gateio",
             "configure": ".*",
             "write": ".*",
             "read": ".*"
@@ -39,21 +39,36 @@ rabbitmq:
     erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P
     username: FAKE_USER
     password: FAKE_PASS
-    
+
 mysql:
-  tag: 8.0.27 
   primary:
     persistence:
-      hostPath: /mnt/b/repos/mysql
-#   initdbScripts:
-#     db-init.sql: |
-#       CREATE TABLE friends (id INT, name VARCHAR(256), age INT, gender VARCHAR(3));
+      enabled: true
+      existingClaim: mysql-pv-claim
+      storageClass: manual
+  initdbScripts:
+    createDdb.sql: |
+      CREATE DATABASE gateio DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+    order.sql: |
+      CREATE TABLE gateio.orders (
+          symbol VARCHAR(50) PRIMARY KEY, 
+          price DECIMAL(35, 17),
+          volume INT,
+          the_time DECIMAL(35, 17),
+          take_profit INT,
+          stop_loss INT, 
+          create_time DECIMAL(35, 17),
+          update_time DECIMAL(35, 17),
+          currency_pair VARCHAR(100),
+          order_status VARCHAR(20),
+          order_type VARCHAR(20),
+          account VARCHAR(20),
+          side VARCHAR(10),
+          iceberg INT
+      )
+  volumePermissions:
+    enabled: true
   auth:
-    database: crypto
-    username: test
-    password: test
-    rootPassword: test
-  mysqlRootPassword: testing
-  mysqlUser: user
-  mysqlPassword: user
+    rootPassword: 0o4QxMIl92
+    database: gateio
 
