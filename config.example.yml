@@ -16,3 +16,10 @@
     # Logging levels used in this program are ERROR, INFO, and DEBUG
     LOG_LEVEL: INFO
     LOG_FILE: bot.log
+  queue:
+    name: queue-name
+    host: localhost
+    port: 30001
+    vhost: gateio
+    user: rabbit-mq-username
+    password: rabbit-mq-password
