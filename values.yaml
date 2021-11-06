@@ -1,0 +1,29 @@
+primary:
+  persistence:
+    enabled: true
+    existingClaim: task-pv-claim
+    storageClass: manual
+initdbScripts:
+  createDdb.sql: |
+    CREATE DATABASE gateio DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+  order.sql: |
+    CREATE TABLE gateio.orders (
+        symbol VARCHAR(50) PRIMARY KEY, 
+        price DECIMAL(35, 17),
+        volume INT,
+        the_time DECIMAL(35, 17),
+        take_profit INT,
+        stop_loss INT, 
+        create_time DECIMAL(35, 17),
+        update_time DECIMAL(35, 17),
+        currency_pair VARCHAR(100),
+        order_status VARCHAR(20),
+        order_type VARCHAR(20),
+        account VARCHAR(20),
+        side VARCHAR(10),
+        iceberg INT
+    )
+volumePermissions:
+  enabled: true
+auth:
+  rootPassword: Jb9YVseD8X

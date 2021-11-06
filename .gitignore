@@ -21,3 +21,4 @@ config.yml
 
 # Ignore test file
 test_order.py
+crypto-bot/charts
