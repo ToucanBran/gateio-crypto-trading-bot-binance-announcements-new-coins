@@ -1,8 +1,31 @@
 auth:
   erlangCookie: asiCgFboxIyqX0vVwvgS2d1tfsqi40P
 
+volumes:
+  logs:
+    path: /run/desktop/mnt/host/b/
+
+logging:
+  logLevel: DEBUG
+
+queue:
+  host: rabbitmq.default.svc.cluster.local
+  port: 5672
+  vhost: gateio
+  user: main
+  password: pass1
+
+scrapers:
+  binance:
+    image: x
+    tag: 123
+    schedule: "*/1 * * * *"
+    configs:
+      queue:
+        name: new-coins
 
 rabbitmq:
+  fullnameOverride: rabbitmq
   replicas: 1
   extraSecrets:
     load-definition:
