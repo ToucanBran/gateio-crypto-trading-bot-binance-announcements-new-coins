@@ -6,7 +6,7 @@ from pika.adapters.blocking_connection import BlockingChannel
 def queue(configs):
     rabbit = RabbitMqWrapper(configs)
     try:
-        rabbit.get_connection_params()
+        rabbit.open_channel(rabbit.get_connection_params())
         yield rabbit
     finally:
         if rabbit.channel_connected():
@@ -24,7 +24,13 @@ class RabbitMqWrapper:
         credentials = pika.PlainCredentials(self.configs["user"], self.configs["password"])
         cp = pika.ConnectionParameters(port=self.configs["port"], host=self.configs["host"], virtual_host=self.configs["vhost"],
                                     credentials=credentials)
-        connection = pika.BlockingConnection(cp)
+        
+        return cp
+
+    def open_channel(self, connection_params: pika.ConnectionParameters=None):
+        if connection_params is None:
+            connection_params = self.get_connection_params()
+        connection = pika.BlockingConnection(connection_params)
         self.channel = connection.channel()
         self.channel.queue_declare(self.configs["name"], durable=True)
         return self.channel

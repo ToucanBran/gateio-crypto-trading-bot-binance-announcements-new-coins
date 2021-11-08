@@ -1,19 +1,15 @@
-import logging
+import logging, os, pathlib
 from load_config import *
-
 
 # loads local configuration
 config = load_config('config.yml')
 
 log = logging
 
-# Set default log settings
-log_level = 'INFO'
-log_file = 'bot.log'
+pathlib.Path('./logs').mkdir(exist_ok=True)
+log_level = os.environ.get("LOG_LEVEL") if os.environ.get("LOG_LEVEL") is not None else 'INFO'
+log_file = './logs/bot.log'
 
-# Get logging variables
-log_level = config['LOGGING']['LOG_LEVEL']
-log_file = config['LOGGING']['LOG_FILE']
 log.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                 handlers=[logging.FileHandler(log_file), logging.StreamHandler()])
 logger = logging.getLogger(__name__)
