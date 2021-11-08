@@ -1,9 +1,9 @@
 from services.rabbitmq_wrapper import RabbitMqWrapper
 import yaml
 
-def test_given_validRabbitConfigurations_when_connectCalled_then_expectSuccessfulConnection(configs):
+def test_given_validRabbitConfigurations_when_openChannelCalled_then_expectSuccessfulConnection(configs):
     wrapper = RabbitMqWrapper(configs["queue"])
-    cp = wrapper.get_connection_params()
-    opened = cp.is_open
+    channel = wrapper.open_channel()
+    opened = channel.is_open
     wrapper.close_connection()
     assert opened
